@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay Mwananchi Marketing Agency</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="checkout-card">
+        <div class="card-header">
+            <i class="fa-solid fa-lock"></i> Secured by Safaricom M-Pesa
+            <h2>Mwananchi Marketing Agency</h2>
+            <span class="sub-header"><i class="fa-solid fa-store"></i> LIPA NA M-PESA</span>
+        </div>
+
+        <form id="paymentForm" class="card-body">
+            <div id="alertBox" class="alert hidden"></div>
+
+            <div class="form-group">
+                <label for="phone"><i class="fa-solid fa-phone"></i> M-Pesa Phone Number</label>
+                <input type="tel" id="phone" placeholder="e.g. 0712345678" required>
+            </div>
+
+            <div class="form-group">
+                <label for="amount"><i class="fa-solid fa-money-bill-wave"></i> Amount (KES)</label>
+                <input type="number" id="amount" placeholder="Enter amount" min="1" required>
+            </div>
+
+            <button type="submit" id="payBtn" class="pay-btn">
+                <i class="fa-solid fa-paper-plane"></i> <span id="btnText">Pay Now</span>
+            </button>
+        </form>
+
+        <div class="card-footer">
+            <p>Payments processed securely via M-Pesa</p>
+            <p class="brand"><i class="fa-solid fa-shield-halved"></i> Powered by Mwananchi Systems</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
