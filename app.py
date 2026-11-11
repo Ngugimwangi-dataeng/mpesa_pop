@@ -20,8 +20,11 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = env_value("SECRET_KEY", "default_secret")
 app.secret_key = app.config["SECRET_KEY"]
 
-# Database Connection Helper
+# Database Connection Helper (Supports single DATABASE_URL or individual params)
 def get_db_connection():
+    db_url = env_value("DATABASE_URL")
+    if db_url:
+        return psycopg2.connect(db_url)
     return psycopg2.connect(
         host=env_value("DB_HOST"),
         port=env_value("DB_PORT"),
