@@ -28,9 +28,10 @@ def get_db_connection():
     return psycopg2.connect(
         host=env_value("DB_HOST"),
         port=env_value("DB_PORT"),
-        database=env_value("DB_NAME"),
-        user=env_value("DB_USER"),
-        password=env_value("DB_PASSWORD")
+        database=env_value("DB_DATABASE"),
+        user=env_value("DB_USERNAME"),
+        password=env_value("DB_PASSWORD"),
+        sslmode=env_value("DB_SSLMODE")
     )
 
 
@@ -66,7 +67,7 @@ def get_mpesa_access_token():
         print(f"Daraja secret present: {bool(consumer_secret)}")
         response = requests.get(api_url, auth=auth_pair, timeout=10)
         print(f"Daraja token response status: {response.status_code}")
-        print(f"Daraja token response body: {response.text}")
+        #print(f"Daraja token response body: {response.text}")
         response.raise_for_status()
         return response.json().get("access_token")
     except Exception as e:
@@ -92,7 +93,7 @@ def index():
 
 @app.route("/api/v1/mpesa/stkpush", methods=["POST"])
 def initiate_stk_push():
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
     phone = data.get("phone")
     amount = data.get("amount")
 
@@ -174,7 +175,7 @@ def initiate_stk_push():
         "PartyB": shortcode,
         "PhoneNumber": phone,
         "CallBackURL": env_value("MPESA_CALLBACK_URL"),
-        "AccountReference": BUSINESS_NAME,
+        "AccountReference": BUSINESS_NAME[:12],
         "TransactionDesc": f"Payment to {BUSINESS_NAME}"
     }
 
@@ -287,4 +288,5 @@ def check_status(checkout_id):
         return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(env_value("PORT", "5000")), debug=True)
+    is_debug = env_value("APP_MODE", "live").lower() !="live"
+    app.run(host="0.0.0.0", port=int(env_value("PORT", "5000")), debug=is_debug)

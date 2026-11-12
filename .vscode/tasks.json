@@ -4,7 +4,7 @@
 		{
 			"label": "Run Flask app",
 			"type": "shell",
-			"command": "python",
+			"command": "${command:python.interpreterPath}",
 			"args": [
 				"app.py"
 			],
